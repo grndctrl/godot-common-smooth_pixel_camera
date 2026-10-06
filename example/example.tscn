@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://cx6j7i4e7fwc5" path="res://common/smooth_pixel_camera/smooth_pixel_view.gd" id="1_view"]
+[ext_resource type="Script" uid="uid://cshm7xieauydi" path="res://common/smooth_pixel_camera/example/example.gd" id="2_world"]
+[ext_resource type="Script" uid="uid://bqm0tg0f1v4k1" path="res://common/smooth_pixel_camera/smooth_pixel_camera_2d.gd" id="3_camera"]
+
+[node name="Example" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="View" type="SubViewportContainer" parent="."]
+layout_mode = 0
+stretch = true
+script = ExtResource("1_view")
+min_game_size = Vector2i(320, 180)
+
+[node name="Game" type="SubViewport" parent="View"]
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+render_target_update_mode = 4
+
+[node name="World" type="Node2D" parent="View/Game"]
+script = ExtResource("2_world")
+
+[node name="Player" type="Polygon2D" parent="View/Game/World"]
+color = Color(0.9372549, 0.4901961, 0.34117648, 1)
+polygon = PackedVector2Array(0, -6, 4, 0, 0, 6, -4, 0)
+
+[node name="Camera" type="Camera2D" parent="View/Game/World" node_paths=PackedStringArray("target")]
+script = ExtResource("3_camera")
+target = NodePath("../Player")
+mouse_look = 0.3
